@@ -7,7 +7,9 @@ This template is intended for marketplace automation. You can use templates as i
 
 ***Prereqs***
 You will need to create an ISO folder, and add in your ISO for your OS
+
 You will need to install Packer
+
 You will need to install AzCopy 
 
 ***Private data***
@@ -19,7 +21,7 @@ After configuring your build system with the required bits and prerequsits use t
 Quick validation of file paths...
 <pre><code>packer validate -var-file=azs_windows_2016_datacenter_privdata.json azs_windows_2016_datacenter.json</pre></code>
 
-Build VSphere images
+Build OS images
 <pre><code>packer build -force -var-file=azs_windows_2016_datacenter_privdata.json azs_windows_2016_datacenter.json</pre></code>
 
 *** Sample a Privdata JSON ***
