@@ -32,7 +32,7 @@ Build OS images
 }</pre></code>
 
 ### Credit
-Joel Fitzgerald - A inital work and ideas came from his repo'
+Joel Fitzgerald - The inital work and ideas came from his repo
 https://github.com/joefitzgerald/packer-windows
 
 
