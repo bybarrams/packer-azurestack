@@ -1,0 +1,60 @@
+{
+  "variables": {
+    "vm_name": "azs-windows2016-1803",
+    "cpu": "2",
+    "ram_size": "2048",
+    "disk_size": "15360",
+    "iso_url": "./iso/en_windows_server_2016_updated_feb_2018_x64_dvd_11636692.iso",
+    "iso_checksum_type": "sha256",
+    "iso_checksum": "AF06E5483C786C023123E325CEA4775050324D9E1366F46850B515AE43F764BE",
+    "hyperv_switchname": "NATSw"
+  },
+  "builders": [
+    {
+      "vm_name": "{{user `vm_name`}}",
+      "type": "hyperv-iso",
+      "disk_size": "{{user `disk_size`}}",
+      "floppy_files": [
+        "./windows/windows-2016-datacenter-amd64/Autounattend.xml",
+        "./windows/common/fixnetwork.ps1",
+        "./windows/common/microsoft-updates.ps1",
+        "./windows/common/win-updates.ps1",
+        "./windows/common/enable-winrm.ps1",
+        "./windows/common/sysprep.bat"
+      ],
+      "boot_wait": "8m",
+      "guest_additions_mode": "disable",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "communicator": "winrm",
+      "winrm_username": "{{user `username`}}",
+      "winrm_password": "{{user `password`}}",
+      "winrm_timeout": "4h",
+      "shutdown_command": "a:/sysprep.bat",
+      "ram_size": "{{user `ram_size`}}",
+      "cpu": "{{user `cpu`}}",
+      "generation": 1,
+      "switch_name": "{{user `hyperv_switchname`}}",
+      "enable_secure_boot": false
+    }],
+  "provisioners": [{
+    "type": "powershell",
+    "elevated_user": "{{user `username`}}",
+    "elevated_password": "{{user `password`}}",
+    "scripts": [
+      "./windows/common/compile-dotnet-assemblies.ps1",
+      "./windows/common/cleanup.ps1",
+      "./windows/common/optimize-drive.ps1"
+    ]
+  }],
+  "post-processors": [
+    {
+      "type": "shell-local",
+      "environment_vars": [ "SHELLLOCALTEST=ShellTest4" ],
+      "execute_command": [ "powershell.exe", "{{.Vars}} {{.Script}}" ],
+      "env_var_format": "$env:%s=\"%s\"; ",
+      "script": "./windows/common/imageprep.ps1"
+    }
+  ]
+}

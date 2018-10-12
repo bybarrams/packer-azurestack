@@ -1,0 +1,6 @@
+/packer_cache
+/.aptcache
+/*.box
+/*.ISO
+/*.iso
+/.vs
